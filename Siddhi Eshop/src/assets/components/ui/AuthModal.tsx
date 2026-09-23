@@ -185,10 +185,7 @@ export const AuthModal: React.FC = () => {
               ? "Create Customer Account"
               : "Sign In to Your Account"}
           </h3>
-          <p className="auth-modal-desc">
-            Login or create an account to dispatch official commercial offers
-            &amp; project RFQs
-          </p>
+
 
           <div className="auth-tabs">
             <button

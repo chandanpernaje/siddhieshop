@@ -81,10 +81,7 @@ export const AuthModals: React.FC = () => {
               <h2 className="text-xl font-black mt-1">
                 Sign In to Your Account
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Login or create an account to dispatch official commercial
-                offers & project RFQs
-              </p>
+
 
               <div className="flex gap-6 mt-4 border-b border-slate-800 text-xs font-bold">
                 <button
