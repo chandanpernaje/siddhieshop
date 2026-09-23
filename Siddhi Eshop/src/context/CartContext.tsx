@@ -108,11 +108,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       quantity = Math.floor(quantity);
       setCart((prev) => {
         const existing = prev.find(
-          (i) => i.id === item.id || i.partNo === item.partNo,
+          (i) => i.id === item.id,
         );
         if (existing) {
           return prev.map((i) =>
-            i.id === item.id || i.partNo === item.partNo
+            i.id === item.id
               ? { ...i, qty: i.qty + quantity }
               : i,
           );

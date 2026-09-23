@@ -13,7 +13,7 @@ export const ProductDetail: React.FC = () => {
   const [selectedCore, setSelectedCore] = useState("3 Core");
   const [selectedSize, setSelectedSize] = useState("0.5 Sqmm");
   const [selectedConductor, setSelectedConductor] = useState("With (Yellow/Green - G)");
-  const [qty, setQty] = useState(10);
+  const [qty, setQty] = useState(50);
   const [selectedImg, setSelectedImg] = useState("/images/cable-olflex-thumb.png");
   
   // State to manage RFQ Modal pop-up
@@ -62,9 +62,10 @@ export const ProductDetail: React.FC = () => {
 
   const handleAddToCart = () => {
     if (!isValidPositiveNumber(qty)) return;
+    const variationId = `${id || "1119003"}-${selectedCore.replace(/\s+/g, '-')}-${selectedSize.replace(/\s+/g, '-')}-${selectedConductor.includes("With") ? "G" : "X"}`;
     addCustomItem(
       {
-        id: id || "1119003",
+        id: variationId,
         name: `ÖLFLEX® CLASSIC 110 ${selectedCore} ${selectedSize} (${selectedConductor})`,
         partNo: id || "1119003",
         brand: "LAPP KABEL",
@@ -73,6 +74,7 @@ export const ProductDetail: React.FC = () => {
       },
       qty
     );
+    setQty(50);
   };
 
   return (
@@ -237,7 +239,7 @@ export const ProductDetail: React.FC = () => {
           </div>
 
           {/* Column 3: Dynamic Pricing, Qty & Actions */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px", position: "sticky", top: "120px", alignSelf: "start" }}>
             
             {/* Dynamic Price Box */}
             <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px" }}>
@@ -254,14 +256,14 @@ export const ProductDetail: React.FC = () => {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", background: "#f8fafc", padding: "8px 12px", borderRadius: "6px", border: "1px solid #cbd5e1" }}>
                 <span style={{ fontSize: "12px", fontWeight: 700, color: "#334155" }}>Update Qty (Mtrs)</span>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <button onClick={() => setQty(Math.max(10, qty - 10))} style={{ width: "26px", height: "26px", background: "#fff", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" }}>-</button>
+                  <button onClick={() => setQty(Math.max(1, qty - 1))} style={{ width: "26px", height: "26px", background: "#fff", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" }}>-</button>
                   <input
                     type="number"
                     value={qty}
                     onChange={(e) => setQty(Math.max(1, Number(e.target.value)))}
                     style={{ width: "45px", textAlign: "center", border: "none", background: "transparent", fontWeight: "bold", fontSize: "13px" }}
                   />
-                  <button onClick={() => setQty(qty + 10)} style={{ width: "26px", height: "26px", background: "#fff", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" }}>+</button>
+                  <button onClick={() => setQty(qty + 1)} style={{ width: "26px", height: "26px", background: "#fff", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" }}>+</button>
                 </div>
               </div>
               <div style={{ fontSize: "10.5px", color: "#d97706", marginBottom: "16px", lineHeight: "1.3" }}>

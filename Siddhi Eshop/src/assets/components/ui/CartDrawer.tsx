@@ -49,10 +49,15 @@ export const CartDrawer: React.FC = () => {
           const summaryList = cart
             .map(
               (item) =>
-                `• ${item.brand} | ${item.name} (${item.partNo}): ${item.qty} ${item.unit}`,
+                `• ${item.brand} | ${item.name} (${item.partNo}): ${item.qty} ${item.unit} @ ₹${item.price.toFixed(2)} = ₹${(item.qty * item.price).toFixed(2)}`,
             )
             .join("\n");
-          notesField.value = `Official GST Quotation Request for Cart Items:\n\n${summaryList}\n\nPlease provide formal GST quote with freight to site and delivery lead times.`;
+            
+          const cartSubtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+          const gstAmount = cartSubtotal * 0.18;
+          const grandTotal = cartSubtotal + gstAmount;
+
+          notesField.value = `Official GST Quotation Request for Cart Items:\n\n${summaryList}\n\nSubtotal: ₹${cartSubtotal.toFixed(2)}\nGST (18%): ₹${gstAmount.toFixed(2)}\nGrand Total: ₹${grandTotal.toFixed(2)}\n\nPlease provide formal GST quote with freight to site and delivery lead times.`;
           notesField.focus();
         }
       }
@@ -161,11 +166,31 @@ export const CartDrawer: React.FC = () => {
         </div>
 
         <div className="cart-drawer-footer">
-          <div className="cart-subtotal-row">
-            <span>Estimated Subtotal (excl. GST):</span>
-            <span id="cartDrawerSubtotal">
+          <div className="cart-subtotal-row" style={{ fontSize: "13px", color: "#64748b", marginBottom: "4px", display: "flex", justifyContent: "space-between" }}>
+            <span>Subtotal (excl. GST):</span>
+            <span>
               ₹
               {subtotal.toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </span>
+          </div>
+          <div className="cart-subtotal-row" style={{ fontSize: "13px", color: "#64748b", marginBottom: "8px", display: "flex", justifyContent: "space-between" }}>
+            <span>GST (18%):</span>
+            <span>
+              ₹
+              {(subtotal * 0.18).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </span>
+          </div>
+          <div className="cart-subtotal-row" style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", marginBottom: "16px", display: "flex", justifyContent: "space-between" }}>
+            <span>Grand Total:</span>
+            <span>
+              ₹
+              {(subtotal * 1.18).toLocaleString("en-IN", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}

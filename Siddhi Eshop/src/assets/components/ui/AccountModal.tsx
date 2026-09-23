@@ -1,7 +1,6 @@
 import React from "react";
-import { X, FileText, Paperclip, Send, Trash2 } from "lucide-react";
+import { X } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 export const AccountModal: React.FC = () => {
   const {
@@ -9,10 +8,7 @@ export const AccountModal: React.FC = () => {
     accountModalOpen,
     closeAccountModal,
     logout,
-    userOffers,
-    deleteOffer,
   } = useAuth();
-  const navigate = useNavigate();
 
   if (!accountModalOpen || !currentUser) return null;
 
@@ -24,16 +20,6 @@ export const AccountModal: React.FC = () => {
       .slice(0, 2)
       .toUpperCase() || "SK";
 
-  const handleSendNewOffer = () => {
-    closeAccountModal();
-    if (window.location.pathname !== "/") {
-      navigate("/#rfqSection");
-    } else {
-      document
-        .getElementById("rfqSection")
-        ?.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   return (
     <div
@@ -116,106 +102,22 @@ export const AccountModal: React.FC = () => {
                 color: "var(--gray-900)",
               }}
             >
-              Your Sent Commercial Offers &amp; RFQs
+              Order History
             </h4>
-            <div id="accountOffersList">
-              {userOffers.length === 0 ? (
-                <p
-                  style={{
-                    fontSize: "13px",
-                    color: "#64748b",
-                    margin: "6px 0",
-                  }}
-                >
-                  No offers or RFQs sent yet. Use the RFQ form to send a
-                  commercial offer.
-                </p>
-              ) : (
-                userOffers.map((o) => (
-                  <div className="offer-item-card" key={o.refNo}>
-                    <div
-                      className="offer-item-top"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        gap: "12px",
-                      }}
-                    >
-                      <span className="offer-ref">
-                        <FileText
-                          size={12}
-                          style={{ display: "inline", marginRight: "4px" }}
-                        />
-                        {o.refNo}
-                      </span>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
-                        }}
-                      >
-                        <span className="offer-date">{o.date}</span>
-                        <button
-                          type="button"
-                          onClick={() => deleteOffer(o.refNo)}
-                          aria-label={`Delete offer ${o.refNo}`}
-                          title="Delete offer"
-                          style={{
-                            border: "none",
-                            background: "none",
-                            color: "var(--primary)",
-                            cursor: "pointer",
-                            padding: "2px",
-                          }}
-                        >
-                          <Trash2 size={15} />
-                        </button>
-                      </div>
-                    </div>
-                    <div style={{ fontSize: "13px", marginTop: "4px" }}>
-                      <strong>Category:</strong> {o.category}
-                    </div>
-                    {o.notes && (
-                      <div
-                        style={{
-                          color: "#475569",
-                          marginTop: "3px",
-                          fontSize: "12.5px",
-                        }}
-                      >
-                        "{o.notes.slice(0, 85)}..."
-                      </div>
-                    )}
-                    {o.filesCount > 0 && (
-                      <div
-                        style={{
-                          fontSize: "11px",
-                          color: "#16a34a",
-                          marginTop: "4px",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                        }}
-                      >
-                        <Paperclip size={12} /> {o.filesCount} file(s) attached
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
+            <div id="accountOrdersList">
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#64748b",
+                  margin: "6px 0",
+                }}
+              >
+                No past orders found. Your confirmed orders will appear here.
+              </p>
             </div>
           </div>
 
-          <div className="account-actions-row">
-            <button
-              type="button"
-              className="btn btn-primary btn-sm"
-              onClick={handleSendNewOffer}
-            >
-              <Send size={14} style={{ marginRight: "6px" }} />
-              Send New Offer / RFQ
-            </button>
+          <div className="account-actions-row" style={{ display: "flex", justifyContent: "flex-end" }}>
             <button
               type="button"
               className="btn btn-outline-secondary btn-sm"
