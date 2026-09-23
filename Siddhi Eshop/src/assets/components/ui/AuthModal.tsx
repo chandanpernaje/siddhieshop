@@ -18,6 +18,8 @@ import {
 
 export const AuthModal: React.FC = () => {
   const {
+    currentUser,
+    logout,
     authModalOpen,
     closeAuthModal,
     authModalTab,
@@ -212,9 +214,30 @@ export const AuthModal: React.FC = () => {
         </div>
 
         <div className="auth-modal-body">
-          {/* LOGIN FORM */}
-          {authModalTab === "login" && (
-            <form className="auth-form active" onSubmit={handleLoginSubmit}>
+          {currentUser ? (
+             <div className="auth-signed-in" style={{ padding: "40px 20px", textAlign: "center" }}>
+               <ShieldCheck size={48} style={{ margin: "0 auto 15px", color: "var(--primary)" }} />
+               <h3 style={{ marginBottom: "10px", fontSize: "1.2rem", fontWeight: "bold" }}>You are already signed in</h3>
+               <p style={{ marginBottom: "24px", fontSize: "0.9rem", color: "#666" }}>
+                 Signed in as {currentUser.contactPerson}
+               </p>
+               <button
+                 type="button"
+                 className="btn"
+                 onClick={() => {
+                   logout();
+                   closeAuthModal();
+                 }}
+                 style={{ width: "100%", padding: "12px", fontWeight: "bold", background: "var(--primary)", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }}
+               >
+                 Sign Out
+               </button>
+             </div>
+          ) : (
+            <>
+              {/* LOGIN FORM */}
+              {authModalTab === "login" && (
+                <form className="auth-form active" onSubmit={handleLoginSubmit}>
               {loginError && (
                 <div className="auth-alert" style={{ display: "block" }}>
                   {loginError}
@@ -568,6 +591,8 @@ export const AuthModal: React.FC = () => {
                 </button>
               </div>
             </form>
+          )}
+          </>
           )}
         </div>
       </div>

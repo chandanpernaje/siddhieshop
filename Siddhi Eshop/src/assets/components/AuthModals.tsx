@@ -100,14 +100,33 @@ export const AuthModals: React.FC = () => {
             </div>
 
             <div className="p-6 max-h-[75vh] overflow-y-auto">
-              {errorMsg && (
-                <div className="bg-red-950/80 border border-red-800 text-red-200 text-xs p-3 rounded-lg mb-4">
-                  {errorMsg}
+              {currentUser ? (
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-4">🛡️</div>
+                  <h3 className="text-xl font-bold mb-2">You are already signed in</h3>
+                  <p className="text-slate-400 mb-6">
+                    Signed in as {currentUser.contactPerson} ({currentUser.companyName})
+                  </p>
+                  <button
+                    onClick={() => {
+                      logout();
+                      closeAuthModal();
+                    }}
+                    className="bg-red-700 hover:bg-red-800 text-white py-2 px-6 rounded-lg font-bold text-sm shadow transition-colors"
+                  >
+                    Sign Out
+                  </button>
                 </div>
-              )}
+              ) : (
+                <>
+                  {errorMsg && (
+                    <div className="bg-red-950/80 border border-red-800 text-red-200 text-xs p-3 rounded-lg mb-4">
+                      {errorMsg}
+                    </div>
+                  )}
 
-              {authModalTab === "login" ? (
-                <form onSubmit={handleLoginSubmit} className="space-y-4">
+                  {authModalTab === "login" ? (
+                    <form onSubmit={handleLoginSubmit} className="space-y-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-300 mb-1">
                       Phone Number OR Business Email ID *
@@ -317,6 +336,8 @@ export const AuthModals: React.FC = () => {
                     </button>
                   </div>
                 </form>
+              )}
+              </>
               )}
             </div>
           </div>
