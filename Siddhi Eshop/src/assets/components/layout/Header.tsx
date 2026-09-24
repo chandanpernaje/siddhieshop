@@ -371,58 +371,22 @@ export const Header: React.FC = () => {
               width: 100% !important;
               justify-content: center !important;
               margin-bottom: 15px !important;
-              order: 1 !important;
-            }
-            .header-actions {
-              width: 100% !important;
-              justify-content: space-between !important;
-              margin-bottom: 15px !important;
-              border-top: none !important;
-              order: 2 !important;
-              display: flex !important;
-              gap: 8px !important;
-            }
-            .action-item {
-              flex: 1 !important;
-              flex-direction: column !important;
-              justify-content: center !important;
-              align-items: center !important;
-              background-color: #f8fafc !important;
-              border-radius: 8px !important;
-              padding: 10px 4px !important;
-              text-align: center !important;
-              border: none !important;
-            }
-            .action-icon-wrap {
-              margin-right: 0 !important;
-              margin-bottom: 6px !important;
-            }
-            .action-text {
-              display: flex !important;
-              flex-direction: column !important;
-              align-items: center !important;
-            }
-            .action-label {
-              font-size: 9px !important;
-              text-transform: uppercase !important;
-              color: #64748b !important;
-              margin-bottom: 2px !important;
-            }
-            .action-val {
-              font-size: 11px !important;
-              white-space: nowrap !important;
-              overflow: hidden !important;
-              text-overflow: ellipsis !important;
-              max-width: 100% !important;
             }
             .header-search-wrap {
               width: 100% !important;
               max-width: 100% !important;
-              margin-bottom: 10px !important;
+              margin-bottom: 15px !important;
+              order: 2 !important;
+            }
+            .header-actions {
+              width: 100% !important;
+              justify-content: space-between !important;
+              margin-top: 0 !important;
+              border-top: none !important;
               order: 3 !important;
             }
             .search-cat-select {
-              max-width: 90px !important;
+              max-width: 100px !important;
               font-size: 11px !important;
               padding: 0 5px !important;
             }
