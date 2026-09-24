@@ -147,12 +147,15 @@ export const ProductDetail: React.FC = () => {
             }
             @media (max-width: 768px) {
               .selector-grid {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(4, minmax(0, 1fr));
                 gap: 4px;
               }
               .selector-btn {
-                padding: 6px 2px;
-                font-size: 10px;
+                padding: 6px 1px;
+                font-size: 9px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                min-width: 0;
               }
             }
           `}
