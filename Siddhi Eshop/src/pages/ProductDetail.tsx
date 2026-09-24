@@ -121,41 +121,18 @@ export const ProductDetail: React.FC = () => {
                 grid-template-columns: 1fr;
               }
             }
-            .selector-grid {
-              display: grid;
-              grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-              gap: 8px;
-            }
-            .selector-btn {
-              padding: 6px 4px;
-              font-size: 11px;
-              font-weight: 700;
-              border-radius: 4px;
-              border: 1px solid #cbd5e1;
-              background: #fff;
-              color: #334155;
-              cursor: pointer;
-              white-space: nowrap;
-              text-align: center;
-              transition: all 0.2s ease;
-              width: 100%;
-            }
-            .selector-btn.active {
-              border: 2px solid #c32125;
-              background: #fff5f5;
-              color: #c32125;
-            }
             @media (max-width: 768px) {
-              .selector-grid {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-                gap: 4px;
+              .selector-grid-mobile {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+                gap: 4px !important;
               }
-              .selector-btn {
-                padding: 6px 1px;
-                font-size: 9px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                min-width: 0;
+              .selector-btn-mobile {
+                padding: 6px 1px !important;
+                font-size: 9px !important;
+                overflow: hidden !important;
+                text-overflow: clip !important;
+                min-width: 0 !important;
+                width: 100% !important;
               }
             }
           `}
@@ -246,12 +223,23 @@ export const ProductDetail: React.FC = () => {
                 <span>1. Number of core</span>
                 <span style={{ color: "#ff6600" }}>{selectedCore}</span>
               </div>
-              <div className="selector-grid">
+              <div className="selector-grid-mobile" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(65px, 1fr))", gap: "6px" }}>
                 {coreOptions.map((core) => (
                   <button
                     key={core}
                     onClick={() => setSelectedCore(core)}
-                    className={`selector-btn ${selectedCore === core ? 'active' : ''}`}
+                    className="selector-btn-mobile"
+                    style={{
+                      padding: "5px 6px",
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      borderRadius: "4px",
+                      border: selectedCore === core ? "2px solid #c32125" : "1px solid #cbd5e1",
+                      background: selectedCore === core ? "#fff5f5" : "#fff",
+                      color: selectedCore === core ? "#c32125" : "#334155",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap"
+                    }}
                   >
                     {core}
                   </button>
@@ -265,12 +253,23 @@ export const ProductDetail: React.FC = () => {
                 <span>2. Size (Sqmm)</span>
                 <span style={{ color: "#ff6600" }}>{selectedSize}</span>
               </div>
-              <div className="selector-grid">
+              <div className="selector-grid-mobile" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))", gap: "6px" }}>
                 {sizeOptions.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`selector-btn ${selectedSize === size ? 'active' : ''}`}
+                    className="selector-btn-mobile"
+                    style={{
+                      padding: "5px 6px",
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      borderRadius: "4px",
+                      border: selectedSize === size ? "2px solid #c32125" : "1px solid #cbd5e1",
+                      background: selectedSize === size ? "#fff5f5" : "#fff",
+                      color: selectedSize === size ? "#c32125" : "#334155",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap"
+                    }}
                   >
                     {size}
                   </button>
