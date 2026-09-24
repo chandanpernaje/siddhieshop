@@ -34,21 +34,15 @@ export const Header: React.FC = () => {
     const val = e.target.value;
     setSearchCategory(val);
     if (val === "lapp") {
-      document
-        .getElementById("lappPortfolioSection")
-        ?.scrollIntoView({ behavior: "smooth" });
+      navigate("/about-lapp");
     } else if (val === "eaton") {
-      document
-        .getElementById("eatonPortfolioSection")
-        ?.scrollIntoView({ behavior: "smooth" });
+      navigate("/about-eaton");
     } else if (val === "partex") {
-      document
-        .getElementById("partexPortfolioSection")
-        ?.scrollIntoView({ behavior: "smooth" });
+      navigate("/about-partex");
     } else if (val === "mennekes") {
-      document
-        .getElementById("mennekesPortfolioSection")
-        ?.scrollIntoView({ behavior: "smooth" });
+      navigate("/about-mennekes");
+    } else if (val === "all") {
+      navigate("/");
     }
   };
 
@@ -115,7 +109,13 @@ export const Header: React.FC = () => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return;
+    if (!searchQuery.trim()) {
+      if (searchCategory === "lapp") navigate("/about-lapp");
+      else if (searchCategory === "eaton") navigate("/about-eaton");
+      else if (searchCategory === "partex") navigate("/about-partex");
+      else if (searchCategory === "mennekes") navigate("/about-mennekes");
+      return;
+    }
 
     if (quickLinks.length > 0) {
       const link = quickLinks[0];
@@ -182,7 +182,7 @@ export const Header: React.FC = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoComplete="off"
               />
-              <button type="submit" className="search-btn" title="Search" onClick={handleSearchSubmit}>
+              <button type="submit" className="search-btn" title="Search">
                 <Search size={18} strokeWidth={2.5} />
               </button>
             </form>
