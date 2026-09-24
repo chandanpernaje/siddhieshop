@@ -4,6 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: process.env.GITHUB_ACTIONS ? "/Siddhi-Eshop/" : "/",
+  base: process.env.GITHUB_ACTIONS ? "/siddhieshop/" : "/",
   plugins: [tailwindcss(), react()],
 });
