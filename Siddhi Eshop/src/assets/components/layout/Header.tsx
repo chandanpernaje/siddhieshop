@@ -352,7 +352,7 @@ export const Header: React.FC = () => {
             }
             .brand-logo-wrap {
               width: 100% !important;
-              justify-content: center !important;
+              justify-content: flex-start !important;
               margin-bottom: 10px !important;
             }
             .header-actions {
