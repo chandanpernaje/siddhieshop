@@ -371,18 +371,19 @@ export const Header: React.FC = () => {
               width: 100% !important;
               justify-content: center !important;
               margin-bottom: 15px !important;
-            }
-            .header-search-wrap {
-              width: 100% !important;
-              max-width: 100% !important;
-              margin-bottom: 15px !important;
-              order: 2 !important;
+              order: 1 !important;
             }
             .header-actions {
               width: 100% !important;
               justify-content: space-between !important;
-              margin-top: 0 !important;
+              margin-bottom: 15px !important;
               border-top: none !important;
+              order: 2 !important;
+            }
+            .header-search-wrap {
+              width: 100% !important;
+              max-width: 100% !important;
+              margin-bottom: 10px !important;
               order: 3 !important;
             }
             .search-cat-select {
