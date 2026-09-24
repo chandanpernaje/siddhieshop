@@ -122,15 +122,15 @@ export const ProductDetail: React.FC = () => {
               }
             }
             .selector-grid {
-              display: flex;
-              flex-wrap: wrap;
-              gap: 8px;
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 6px;
             }
             .selector-btn {
-              padding: 6px 12px;
-              font-size: 12px;
+              padding: 6px 4px;
+              font-size: 11px;
               font-weight: 700;
-              border-radius: 6px;
+              border-radius: 4px;
               border: 1px solid #cbd5e1;
               background: #fff;
               color: #334155;
@@ -138,7 +138,7 @@ export const ProductDetail: React.FC = () => {
               white-space: nowrap;
               text-align: center;
               transition: all 0.2s ease;
-              flex: 0 0 auto;
+              width: 100%;
             }
             .selector-btn.active {
               border: 2px solid #c32125;
@@ -147,11 +147,11 @@ export const ProductDetail: React.FC = () => {
             }
             @media (max-width: 480px) {
               .selector-grid {
-                gap: 6px;
+                gap: 4px;
               }
               .selector-btn {
-                padding: 6px 10px;
-                font-size: 11px;
+                padding: 6px 2px;
+                font-size: 10px;
               }
             }
           `}
