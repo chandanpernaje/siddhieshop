@@ -15,7 +15,17 @@ export const ProductDetail: React.FC = () => {
   const [selectedConductor, setSelectedConductor] = useState("With Earth (Yellow/Green - G)");
   const [qty, setQty] = useState(50);
   const [selectedImg, setSelectedImg] = useState("/images/cable-olflex-thumb.png");
-  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(100);
+
+  const handleZoomIn = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setZoomLevel(prev => Math.min(prev + 20, 220));
+  };
+
+  const handleZoomOut = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setZoomLevel(prev => Math.max(prev - 20, 100));
+  };
   
   // State to manage RFQ Modal pop-up
   const [selectedProductForRFQ, setSelectedProductForRFQ] = useState<string | null>(null);
@@ -117,13 +127,30 @@ export const ProductDetail: React.FC = () => {
           {/* Column 1: Image Gallery & Zoom Preview */}
           <div>
             <div 
-              style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "16px", textAlign: "center", marginBottom: "12px", height: "340px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", cursor: isZoomed ? "zoom-out" : "zoom-in", overflow: "hidden" }}
-              onClick={() => setIsZoomed(!isZoomed)}
+              style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "16px", textAlign: "center", marginBottom: "12px", height: "340px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}
             >
-              <div style={{ position: "absolute", top: "10px", right: "10px", background: "#ff6600", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "3px 8px", borderRadius: "4px", zIndex: 10 }}>
-                Zoom: 220%
+              <div style={{ position: "absolute", top: "10px", right: "10px", background: "#f1f5f9", border: "1px solid #e2e8f0", borderRadius: "6px", display: "flex", alignItems: "center", zIndex: 10, overflow: "hidden", boxShadow: "0 2px 4px rgba(0,0,0,0.05)" }}>
+                <button 
+                  onClick={handleZoomOut}
+                  disabled={zoomLevel <= 100}
+                  style={{ background: "#fff", border: "none", padding: "6px 10px", cursor: zoomLevel <= 100 ? "not-allowed" : "pointer", fontSize: "16px", fontWeight: "bold", color: zoomLevel <= 100 ? "#cbd5e1" : "#0f172a", borderRight: "1px solid #e2e8f0" }}
+                  title="Zoom Out"
+                >
+                  -
+                </button>
+                <div style={{ padding: "0 10px", fontSize: "11px", fontWeight: 700, color: "#64748b", minWidth: "45px", textAlign: "center" }}>
+                  {zoomLevel}%
+                </div>
+                <button 
+                  onClick={handleZoomIn}
+                  disabled={zoomLevel >= 220}
+                  style={{ background: "#fff", border: "none", padding: "6px 10px", cursor: zoomLevel >= 220 ? "not-allowed" : "pointer", fontSize: "16px", fontWeight: "bold", color: zoomLevel >= 220 ? "#cbd5e1" : "#0f172a", borderLeft: "1px solid #e2e8f0" }}
+                  title="Zoom In"
+                >
+                  +
+                </button>
               </div>
-              <img src={selectedImg} alt="ÖLFLEX CLASSIC 110" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain", transform: isZoomed ? "scale(2.2)" : "scale(1)", transition: "transform 0.3s ease" }} />
+              <img src={selectedImg} alt="ÖLFLEX CLASSIC 110" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain", transform: `scale(${zoomLevel / 100})`, transition: "transform 0.2s ease-out" }} />
             </div>
             <div style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "4px" }}>
               {galleryImages.map((img, i) => (
