@@ -12,9 +12,10 @@ export const ProductDetail: React.FC = () => {
   // Interactive selectors state
   const [selectedCore, setSelectedCore] = useState("3 Core");
   const [selectedSize, setSelectedSize] = useState("0.5 Sqmm");
-  const [selectedConductor, setSelectedConductor] = useState("With (Yellow/Green - G)");
+  const [selectedConductor, setSelectedConductor] = useState("With Earth (Yellow/Green - G)");
   const [qty, setQty] = useState(50);
   const [selectedImg, setSelectedImg] = useState("/images/cable-olflex-thumb.png");
+  const [isZoomed, setIsZoomed] = useState(false);
   
   // State to manage RFQ Modal pop-up
   const [selectedProductForRFQ, setSelectedProductForRFQ] = useState<string | null>(null);
@@ -93,14 +94,36 @@ export const ProductDetail: React.FC = () => {
         </div>
 
         {/* Main 3-Column Layout */}
-<div className="product-detail-grid">          
+        <style>
+          {`
+            .product-detail-grid {
+              display: grid;
+              grid-template-columns: 1fr 1.3fr 1fr;
+              gap: 24px;
+            }
+            .product-bottom-grid {
+              display: grid;
+              grid-template-columns: 1.2fr 1fr;
+              gap: 40px;
+            }
+            @media (max-width: 991px) {
+              .product-detail-grid, .product-bottom-grid {
+                grid-template-columns: 1fr;
+              }
+            }
+          `}
+        </style>
+        <div className="product-detail-grid">          
           {/* Column 1: Image Gallery & Zoom Preview */}
           <div>
-            <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "16px", textAlign: "center", marginBottom: "12px", height: "340px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-              <div style={{ position: "absolute", top: "10px", right: "10px", background: "#ff6600", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "3px 8px", borderRadius: "4px" }}>
+            <div 
+              style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "16px", textAlign: "center", marginBottom: "12px", height: "340px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", cursor: isZoomed ? "zoom-out" : "zoom-in", overflow: "hidden" }}
+              onClick={() => setIsZoomed(!isZoomed)}
+            >
+              <div style={{ position: "absolute", top: "10px", right: "10px", background: "#ff6600", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "3px 8px", borderRadius: "4px", zIndex: 10 }}>
                 Zoom: 220%
               </div>
-              <img src={selectedImg} alt="ÖLFLEX CLASSIC 110" style={{ maxHeight: "280px", maxWidth: "100%", objectFit: "contain" }} />
+              <img src={selectedImg} alt="ÖLFLEX CLASSIC 110" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain", transform: isZoomed ? "scale(2.2)" : "scale(1)", transition: "transform 0.3s ease" }} />
             </div>
             <div style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "4px" }}>
               {galleryImages.map((img, i) => (
@@ -159,20 +182,21 @@ export const ProductDetail: React.FC = () => {
                 <span>1. Number of core</span>
                 <span style={{ color: "#ff6600" }}>{selectedCore}</span>
               </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(65px, 1fr))", gap: "6px" }}>
                 {coreOptions.map((core) => (
                   <button
                     key={core}
                     onClick={() => setSelectedCore(core)}
                     style={{
-                      padding: "5px 10px",
+                      padding: "5px 6px",
                       fontSize: "11px",
                       fontWeight: 700,
                       borderRadius: "4px",
                       border: selectedCore === core ? "2px solid #c32125" : "1px solid #cbd5e1",
                       background: selectedCore === core ? "#fff5f5" : "#fff",
                       color: selectedCore === core ? "#c32125" : "#334155",
-                      cursor: "pointer"
+                      cursor: "pointer",
+                      whiteSpace: "nowrap"
                     }}
                   >
                     {core}
@@ -187,20 +211,21 @@ export const ProductDetail: React.FC = () => {
                 <span>2. Size (Sqmm)</span>
                 <span style={{ color: "#ff6600" }}>{selectedSize}</span>
               </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))", gap: "6px" }}>
                 {sizeOptions.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
                     style={{
-                      padding: "5px 10px",
+                      padding: "5px 6px",
                       fontSize: "11px",
                       fontWeight: 700,
                       borderRadius: "4px",
                       border: selectedSize === size ? "2px solid #c32125" : "1px solid #cbd5e1",
                       background: selectedSize === size ? "#fff5f5" : "#fff",
                       color: selectedSize === size ? "#c32125" : "#334155",
-                      cursor: "pointer"
+                      cursor: "pointer",
+                      whiteSpace: "nowrap"
                     }}
                   >
                     {size}
@@ -212,13 +237,14 @@ export const ProductDetail: React.FC = () => {
             {/* 3. Protective Conductor Selector */}
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", fontWeight: "700", marginBottom: "6px", color: "#1e293b" }}>
-                <span>3. Protective conductor (with/without Yellow/Green)</span>
-                <span style={{ color: "#ff6600" }}>{selectedConductor.includes("With") ? "With Earth (G)" : "Without (X)"}</span>
+                <span style={{ paddingRight: "8px" }}>3. Protective conductor (with/without Yellow/Green)</span>
+                <span style={{ color: "#ff6600", whiteSpace: "nowrap" }}>{selectedConductor.includes("With") ? "With Earth (G)" : "Without (X)"}</span>
               </div>
-              <div style={{ display: "flex", gap: "8px" }}>
-                {["With (Yellow/Green - G)", "Without (All Numbered - X)"].map((cond) => (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(135px, 1fr))", gap: "8px" }}>
+                {["With Earth (Yellow/Green - G)", "Without Earth (Numbered - X)"].map((cond) => (
                   <button
                     key={cond}
+                    title={cond}
                     onClick={() => setSelectedConductor(cond)}
                     style={{
                       padding: "7px 12px",
@@ -228,7 +254,11 @@ export const ProductDetail: React.FC = () => {
                       border: selectedConductor === cond ? "2px solid #0f172a" : "1px solid #cbd5e1",
                       background: selectedConductor === cond ? "#0f172a" : "#fff",
                       color: selectedConductor === cond ? "#fff" : "#334155",
-                      cursor: "pointer"
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      width: "100%"
                     }}
                   >
                     {cond}
@@ -274,15 +304,6 @@ export const ProductDetail: React.FC = () => {
               <button className="btn btn-primary" onClick={handleAddToCart} style={{ width: "100%", marginBottom: "10px", background: "#2563eb", justifyContent: "center" }}>
                 <ShoppingCart size={15} /> ADD TO ENQUIRY
               </button>
-
-              {/* 2. Add & Request Quote (Opens RFQ Modal Popup) */}
-              <button 
-                className="btn btn-primary" 
-                onClick={() => setSelectedProductForRFQ(`ÖLFLEX® CLASSIC 110 ${selectedCore} ${selectedSize} (Part: ${id || "1119003"}) - Qty: ${qty}m @ ₹${currentPricing.price}/mtr`)} 
-                style={{ width: "100%", background: "#dc2626", justifyContent: "center" }}
-              >
-                ADD & REQUEST QUOTE
-              </button>
             </div>
 
             {/* Bulk Order Box (Opens RFQ Modal Popup) */}
@@ -327,7 +348,7 @@ export const ProductDetail: React.FC = () => {
 
         {/* Bottom Section: Detailed Product Description & Full Technical Specifications Table */}
         <div style={{ marginTop: "30px", background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "30px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "40px" }}>
+          <div className="product-bottom-grid">
             
             <div>
               <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", marginBottom: "16px" }}>Product Description</h3>

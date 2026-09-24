@@ -4,6 +4,8 @@ import { Search, User, FileText, ShoppingCart } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { useCart } from "../../../context/CartContext";
 
+import { PRODUCTS_DATA } from "../../../data/products";
+
 export const Header: React.FC = () => {
   const {
     currentUser,
@@ -28,16 +30,7 @@ export const Header: React.FC = () => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (window.location.pathname !== "/") {
-      navigate("/");
-      setTimeout(() => {
-        const el = document.getElementById("productsSection");
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }, 100);
-    } else {
-      const el = document.getElementById("productsSection");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
+    // Just prevent default, the dropdown will show the results
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -72,6 +65,57 @@ export const Header: React.FC = () => {
     }
   };
 
+  // Filter products for dropdown
+  const searchResults = React.useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    let list = PRODUCTS_DATA;
+    if (searchCategory !== "all") {
+      if (searchCategory === "lapp") {
+        list = list.filter((p) => p.brand.toLowerCase().includes("lapp"));
+      } else if (searchCategory === "eaton") {
+        list = list.filter((p) => p.brand.toLowerCase().includes("eaton"));
+      } else if (searchCategory === "partex") {
+        list = list.filter((p) => p.brand.toLowerCase().includes("partex"));
+      } else if (searchCategory === "mennekes") {
+        list = list.filter((p) => p.brand.toLowerCase().includes("menn"));
+      }
+    }
+    const q = searchQuery.toLowerCase().trim();
+    return list.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.partNo.toLowerCase().includes(q) ||
+        p.brand.toLowerCase().includes(q) ||
+        p.specs.some((s) => s.toLowerCase().includes(q)) ||
+        p.application.toLowerCase().includes(q),
+    ).slice(0, 6); // limit to 6 results
+  }, [searchQuery, searchCategory]);
+
+  // Quick links for brands and pages
+  const quickLinks = React.useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase().trim();
+    const links: { title: string; url?: string; action?: string }[] = [];
+
+    if (q.includes("lapp") || q.includes("olflex") || q.includes("unitronic")) {
+      links.push({ title: "View Lapp Kabel Germany Portfolio", url: "/about-lapp" });
+    }
+    if (q.includes("eaton") || q.includes("moeller")) {
+      links.push({ title: "View Eaton Moeller Portfolio", url: "/about-eaton" });
+    }
+    if (q.includes("partex") || q.includes("marker")) {
+      links.push({ title: "View Partex Sweden Portfolio", url: "/about-partex" });
+    }
+    if (q.includes("mennekes") || q.includes("menax") || q.includes("plug") || q.includes("socket")) {
+      links.push({ title: "View Mennekes Germany Portfolio", url: "/about-mennekes" });
+    }
+    if (q.includes("request") || q.includes("form") || q.includes("quote") || q.includes("rfq")) {
+      links.push({ title: "Go to Request for Quotation (RFQ) Form", action: "rfq" });
+    }
+    
+    return links;
+  }, [searchQuery]);
+
   return (
     <header className="main-header">
       <div className="container">
@@ -100,7 +144,7 @@ export const Header: React.FC = () => {
           </Link>
 
           {/* Search with Category Filter */}
-          <div className="header-search-wrap">
+          <div className="header-search-wrap" style={{ position: "relative" }}>
             <form className="search-form" onSubmit={handleSearchSubmit}>
               <select
                 className="search-cat-select"
@@ -121,11 +165,94 @@ export const Header: React.FC = () => {
                 placeholder="Search Part No., Lapp ÖLFLEX, Eaton, Partex, Mennekes..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                autoComplete="off"
               />
-              <button type="submit" className="search-btn" title="Search">
+              <button type="submit" className="search-btn" title="Search" onClick={handleSearchSubmit}>
                 <Search size={18} strokeWidth={2.5} />
               </button>
             </form>
+            {/* Search Dropdown */}
+            {searchQuery.trim() !== "" && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  right: 0,
+                  background: "#fff",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                  borderRadius: "0 0 8px 8px",
+                  zIndex: 1000,
+                  maxHeight: "400px",
+                  overflowY: "auto",
+                  border: "1px solid #e2e8f0",
+                  borderTop: "none"
+                }}
+              >
+                {quickLinks.length > 0 && (
+                  <div style={{ padding: "8px 15px", background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+                    <div style={{ fontSize: "11px", fontWeight: "700", color: "#64748b", textTransform: "uppercase", marginBottom: "6px" }}>Quick Links</div>
+                    {quickLinks.map((link, idx) => (
+                      <div
+                        key={`ql-${idx}`}
+                        onClick={() => {
+                          setSearchQuery("");
+                          if (link.action === "rfq") {
+                            scrollToRfq();
+                          } else {
+                            navigate(link.url!);
+                          }
+                        }}
+                        style={{
+                          fontSize: "13px",
+                          color: "#c32125",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          padding: "6px 0",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px"
+                        }}
+                      >
+                        <span style={{ fontSize: "16px" }}>→</span> {link.title}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {searchResults.length > 0 ? (
+                  searchResults.map((prod) => (
+                    <div
+                      key={prod.id}
+                      onClick={() => {
+                        setSearchQuery("");
+                        navigate(`/product/${prod.partNo}`);
+                      }}
+                      style={{
+                        padding: "10px 15px",
+                        borderBottom: "1px solid #f1f5f9",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "12px",
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "#f8fafc")}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    >
+                      <img src={prod.image} alt={prod.name} style={{ width: "40px", height: "40px", objectFit: "contain" }} />
+                      <div>
+                        <div style={{ fontSize: "13px", fontWeight: "700", color: "#0f172a" }}>{prod.name}</div>
+                        <div style={{ fontSize: "11px", color: "#64748b" }}>{prod.brand} • PN: {prod.partNo}</div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div style={{ padding: "15px", textAlign: "center", color: "#64748b", fontSize: "13px" }}>
+                    {quickLinks.length > 0 ? "No specific products found, try the quick links above." : `No products found for "${searchQuery}"`}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Header Actions */}
@@ -201,6 +328,27 @@ export const Header: React.FC = () => {
           </div>
         </div>
       </div>
+      <style>
+        {`
+          @media (max-width: 991px) {
+            .header-inner {
+              justify-content: center !important;
+              text-align: center !important;
+            }
+            .brand-logo-wrap {
+              width: 100% !important;
+              justify-content: center !important;
+              margin-bottom: 10px !important;
+            }
+            .header-actions {
+              width: 100% !important;
+              justify-content: center !important;
+              margin-top: 10px !important;
+              border-top: none !important;
+            }
+          }
+        `}
+      </style>
     </header>
   );
 };

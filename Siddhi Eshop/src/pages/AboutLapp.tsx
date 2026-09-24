@@ -218,7 +218,7 @@ export const AboutLapp: React.FC = () => {
           className="lapp-product-card-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
             gap: "20px",
             marginBottom: "30px",
           }}
@@ -273,9 +273,9 @@ export const AboutLapp: React.FC = () => {
               <Link
                 to="/olflex-cables"
                 className="btn btn-primary btn-sm"
-                style={{ width: "100%", textAlign: "center" }}
+                style={{ width: "100%", textAlign: "center", textTransform: "uppercase" }}
               >
-                View Products (113) →
+                View Products &rarr;
               </Link>
             </div>
           </div>
@@ -330,10 +330,10 @@ export const AboutLapp: React.FC = () => {
               <div style={{ display: "flex", gap: "10px" }}>
                 <button
                   className="btn btn-primary btn-sm"
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, textTransform: "uppercase" }}
                   onClick={() => scrollToRfqTopic("UNITRONIC Cables")}
                 >
-                  Request Unitronic Quote
+                  Request Quote
                 </button>
               </div>
             </div>
@@ -389,10 +389,10 @@ export const AboutLapp: React.FC = () => {
               <div style={{ display: "flex", gap: "10px" }}>
                 <button
                   className="btn btn-primary btn-sm"
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, textTransform: "uppercase" }}
                   onClick={() => scrollToRfqTopic("SKINTOP Glands")}
                 >
-                  Request Gland Quote
+                  Request Quote
                 </button>
               </div>
             </div>
@@ -409,9 +409,10 @@ export const AboutLapp: React.FC = () => {
               </p>
               <button
                 className="btn btn-primary btn-sm"
+                style={{ width: "100%", textTransform: "uppercase" }}
                 onClick={() => scrollToRfqTopic("UNIPLUS Single Cores")}
               >
-                Request Uniplus Quote
+                Request Quote
               </button>
             </div>
           </div>
@@ -427,9 +428,10 @@ export const AboutLapp: React.FC = () => {
               </p>
               <button
                 className="btn btn-primary btn-sm"
+                style={{ width: "100%", textTransform: "uppercase" }}
                 onClick={() => scrollToRfqTopic("SILVYN Conduits")}
               >
-                Request Silvyn Quote
+                Request Quote
               </button>
             </div>
           </div>
@@ -445,9 +447,10 @@ export const AboutLapp: React.FC = () => {
               </p>
               <button
                 className="btn btn-primary btn-sm"
+                style={{ width: "100%", textTransform: "uppercase" }}
                 onClick={() => scrollToRfqTopic("LAPP INFRA House Wiring")}
               >
-                Request Infra Quote
+                Request Quote
               </button>
             </div>
           </div>

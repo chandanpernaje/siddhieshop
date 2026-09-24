@@ -200,7 +200,7 @@ export const CatalogGrid: React.FC = () => {
                     }}
                     style={{ background: "#dc2626", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "6px", fontSize: "11px", fontWeight: "700", cursor: "pointer" }}
                   >
-                    ADD TO ENQUIRY
+                    REQUEST QUOTE
                   </button>
                 </div>
               </div>
