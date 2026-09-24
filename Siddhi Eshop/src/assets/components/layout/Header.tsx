@@ -232,13 +232,13 @@ export const Header: React.FC = () => {
         </div>
       </div>
       <style>
-        {\`
+        {`
           @media (max-width: 768px) {
             .hidden-mobile {
               display: none !important;
             }
           }
-        \`}
+        `}
       </style>
     </header>
   );
