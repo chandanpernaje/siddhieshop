@@ -5734,6 +5734,8 @@ h6 {
 
   .brand-logo-wrap {
     gap: 10px !important;
+    margin-right: auto !important;
+    justify-content: flex-start !important;
   }
 
   .brand-logo-wrap img,
