@@ -123,11 +123,11 @@ export const ProductDetail: React.FC = () => {
             }
             .selector-grid {
               display: grid;
-              grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+              grid-template-columns: repeat(4, 1fr);
               gap: 6px;
             }
             .selector-btn {
-              padding: 5px 4px;
+              padding: 6px 4px;
               font-size: 11px;
               font-weight: 700;
               border-radius: 4px;
@@ -147,7 +147,6 @@ export const ProductDetail: React.FC = () => {
             }
             @media (max-width: 480px) {
               .selector-grid {
-                grid-template-columns: repeat(4, 1fr);
                 gap: 4px;
               }
               .selector-btn {
