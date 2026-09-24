@@ -28,10 +28,7 @@ export const Header: React.FC = () => {
     }
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Just prevent default, the dropdown will show the results
-  };
+
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
@@ -115,6 +112,24 @@ export const Header: React.FC = () => {
     
     return links;
   }, [searchQuery]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+
+    if (quickLinks.length > 0) {
+      const link = quickLinks[0];
+      setSearchQuery("");
+      if (link.action === "rfq") {
+        scrollToRfq();
+      } else {
+        navigate(link.url!);
+      }
+    } else if (searchResults.length > 0) {
+      setSearchQuery("");
+      navigate(`/product/${searchResults[0].partNo}`);
+    }
+  };
 
   return (
     <header className="main-header">
