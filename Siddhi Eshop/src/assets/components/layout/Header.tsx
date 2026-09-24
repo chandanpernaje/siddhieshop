@@ -4,7 +4,7 @@ import { Search, User, FileText, ShoppingCart } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { useCart } from "../../../context/CartContext";
 
-import { PRODUCTS_DATA } from "../../../data/products";
+import { PRODUCTS_DATA, ALL_OLFLEX_PRODUCTS } from "../../../data/products";
 
 export const Header: React.FC = () => {
   const {
@@ -59,7 +59,30 @@ export const Header: React.FC = () => {
   // Filter products for dropdown
   const searchResults = React.useMemo(() => {
     if (!searchQuery.trim()) return [];
-    let list = PRODUCTS_DATA;
+    
+    // Normalize both product arrays for search
+    const combinedList = [
+      ...PRODUCTS_DATA.map(p => ({
+        id: p.id,
+        partNo: p.partNo,
+        name: p.name,
+        brand: p.brand || "",
+        searchString: `${p.name} ${p.partNo} ${p.brand} ${(p.specs||[]).join(" ")} ${p.application || ""}`.toLowerCase(),
+        image: p.image || "/images/placeholder-product.jpg",
+        route: `/product/${p.partNo}`
+      })),
+      ...ALL_OLFLEX_PRODUCTS.map(p => ({
+        id: p.partNo,
+        partNo: p.partNo,
+        name: p.name,
+        brand: p.brand || "LAPP KABEL",
+        searchString: `${p.name} ${p.partNo} ${p.brand || "LAPP KABEL"} ${p.desc || ""} ${p.category || ""}`.toLowerCase(),
+        image: "/images/card-olflex.jpg",
+        route: `/olflex`
+      }))
+    ];
+
+    let list = combinedList;
     if (searchCategory !== "all") {
       if (searchCategory === "lapp") {
         list = list.filter((p) => p.brand.toLowerCase().includes("lapp"));
@@ -72,14 +95,7 @@ export const Header: React.FC = () => {
       }
     }
     const q = searchQuery.toLowerCase().trim();
-    return list.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.partNo.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q) ||
-        p.specs.some((s) => s.toLowerCase().includes(q)) ||
-        p.application.toLowerCase().includes(q),
-    ).slice(0, 6); // limit to 6 results
+    return list.filter((p) => p.searchString.includes(q)).slice(0, 6); // limit to 6 results
   }, [searchQuery, searchCategory]);
 
   // Quick links for brands and pages
@@ -127,7 +143,7 @@ export const Header: React.FC = () => {
       }
     } else if (searchResults.length > 0) {
       setSearchQuery("");
-      navigate(`/product/${searchResults[0].partNo}`);
+      navigate(searchResults[0].route);
     }
   };
 
@@ -236,12 +252,12 @@ export const Header: React.FC = () => {
                 )}
                 
                 {searchResults.length > 0 ? (
-                  searchResults.map((prod) => (
+                  searchResults.map((prod, idx) => (
                     <div
-                      key={prod.id}
+                      key={prod.id || idx}
                       onClick={() => {
                         setSearchQuery("");
-                        navigate(`/product/${prod.partNo}`);
+                        navigate(prod.route);
                       }}
                       style={{
                         padding: "10px 15px",
@@ -347,19 +363,32 @@ export const Header: React.FC = () => {
         {`
           @media (max-width: 991px) {
             .header-inner {
+              flex-wrap: wrap !important;
               justify-content: center !important;
               text-align: center !important;
             }
             .brand-logo-wrap {
               width: 100% !important;
-              justify-content: flex-start !important;
-              margin-bottom: 10px !important;
+              justify-content: center !important;
+              margin-bottom: 15px !important;
+            }
+            .header-search-wrap {
+              width: 100% !important;
+              max-width: 100% !important;
+              margin-bottom: 15px !important;
+              order: 2 !important;
             }
             .header-actions {
               width: 100% !important;
-              justify-content: center !important;
-              margin-top: 10px !important;
+              justify-content: space-between !important;
+              margin-top: 0 !important;
               border-top: none !important;
+              order: 3 !important;
+            }
+            .search-cat-select {
+              max-width: 100px !important;
+              font-size: 11px !important;
+              padding: 0 5px !important;
             }
           }
         `}
